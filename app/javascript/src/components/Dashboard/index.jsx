@@ -1,5 +1,6 @@
 import React from "react";
 
+import ArticleTable from "../ArticleTable";
 import NavBar from "../NavBar";
 import SideBar from "../SideBar";
 
@@ -7,7 +8,10 @@ const Dashboard = () => {
   return (
     <div>
       <NavBar />
-      <SideBar />
+      <div className="flex">
+        <SideBar />
+        <ArticleTable />
+      </div>
     </div>
   );
 };
