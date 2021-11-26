@@ -1,4 +1,5 @@
 module.exports = {
+  important: true,
   future: {
     // removeDeprecatedGapUtilities: true,
     // purgeLayersByDefault: true,
@@ -7,6 +8,9 @@ module.exports = {
   theme: {
     extend: {},
   },
-  variants: {},
+  variants: {
+    backgroundColor: ["odd", "even"],
+  },
+
   plugins: [],
 }
