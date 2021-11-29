@@ -1,19 +1,18 @@
 import React from "react";
 
-import ArticleTable from "../ArticleTable";
-import NavBar from "../NavBar";
-import SideBar from "../SideBar";
+import { Route, Switch, Redirect } from "react-router-dom";
 
-const Dashboard = () => {
-  return (
-    <div>
-      <NavBar />
-      <div className="flex">
-        <SideBar />
-        <ArticleTable />
-      </div>
-    </div>
-  );
-};
+import Articles from "../Articles";
+import NavBar from "../NavBar";
+
+const Dashboard = () => (
+  <>
+    <NavBar />
+    <Switch>
+      <Route exact path="/articles" component={Articles} />
+      <Redirect to="/articles" />
+    </Switch>
+  </>
+);
 
 export default Dashboard;
