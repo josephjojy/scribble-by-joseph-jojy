@@ -79,7 +79,9 @@ const SideBar = ({ selectedCategory, setSelectedCategory }) => {
           setIsAddCollapsed={setIsAddCollapsed}
         />
         {categories
-          .filter(category => category.name.toLowerCase().includes(searchText))
+          .filter(category =>
+            category.name.toLowerCase().includes(searchText.toLowerCase())
+          )
           .map((category, index) => {
             return (
               <MenuBar.Block
