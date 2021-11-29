@@ -1,14 +1,37 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Search, Plus, Close } from "@bigbinary/neeto-icons";
 import { Typography } from "@bigbinary/neetoui/v2";
 import { MenuBar } from "@bigbinary/neetoui/v2/layouts";
 
+import categoriesApi from "apis/categories";
+
 import AddCategory from "./AddCategory";
 
-const SideBar = () => {
+const SideBar = ({ selectedCategory, setSelectedCategory }) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
+  const [categories, setCategories] = useState([]);
+  const [searchText, setSearchText] = useState("");
+
+  const fetchCategories = async () => {
+    try {
+      const respsonse = await categoriesApi.index();
+      const { categories } = await respsonse.data;
+      setCategories(categories);
+    } catch (error) {
+      logger.error(error);
+    }
+  };
+
+  const handleClick = id => {
+    if (selectedCategory === id) setSelectedCategory();
+    else setSelectedCategory(id);
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
 
   return (
     <div className="flex">
@@ -21,11 +44,16 @@ const SideBar = () => {
           iconProps={[
             {
               icon: Search,
-              onClick: () => setIsSearchCollapsed(!isSearchCollapsed),
+              onClick: () => {
+                setIsSearchCollapsed(!isSearchCollapsed),
+                  setIsAddCollapsed(true);
+              },
             },
             {
               icon: isAddCollapsed ? Plus : Close,
-              onClick: () => setIsAddCollapsed(!isAddCollapsed),
+              onClick: () => {
+                setIsAddCollapsed(!isAddCollapsed), setIsSearchCollapsed(true);
+              },
             },
           ]}
         >
@@ -40,15 +68,29 @@ const SideBar = () => {
         </MenuBar.SubTitle>
         <MenuBar.Search
           collapse={isSearchCollapsed}
-          onCollapse={() => setIsSearchCollapsed(true)}
+          onCollapse={() => {
+            setIsSearchCollapsed(true);
+            setSearchText("");
+          }}
+          onChange={e => setSearchText(e.target.value)}
         />
         <AddCategory
           isAddCollapsed={isAddCollapsed}
           setIsAddCollapsed={setIsAddCollapsed}
         />
-        <MenuBar.Block label="Getting Started" count={80} />
-        <MenuBar.Block label="Apps Integration" count={40} />
-        <MenuBar.Block label="Misc" count={20} />
+        {categories
+          .filter(category => category.name.toLowerCase().includes(searchText))
+          .map((category, index) => {
+            return (
+              <MenuBar.Block
+                key={index}
+                label={category.name}
+                onClick={() => handleClick(category.id)}
+                count={0}
+                active={selectedCategory === category.id}
+              />
+            );
+          })}
       </MenuBar>
     </div>
   );

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Check } from "@bigbinary/neeto-icons";
 import { Input, Button } from "@bigbinary/neetoui/v2";
@@ -15,6 +15,10 @@ const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
       setIsAddCollapsed(true);
     }
   };
+  useEffect(() => {
+    setError("");
+  }, [isAddCollapsed]);
+
   if (!isAddCollapsed) {
     return (
       <div>
@@ -30,7 +34,9 @@ const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
               onClick={() => handleSubmit()}
             />
           }
-          onChange={e => setCategories(e.target.value)}
+          onChange={e => {
+            setCategories(e.target.value), setError("");
+          }}
         />
       </div>
     );
