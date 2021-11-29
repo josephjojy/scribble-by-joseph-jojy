@@ -2,19 +2,34 @@ import React, { useState, useEffect } from "react";
 
 import { Check } from "@bigbinary/neeto-icons";
 import { Input, Button } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
+
+import categoriesApi from "../../apis/categories";
 
 const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
-  const [categories, setCategories] = useState("");
+  const [categoryName, setCategoryName] = useState("");
   const [error, setError] = useState("");
 
+  const addCategory = async () => {
+    try {
+      await categoriesApi.create({
+        category: { name: categoryName },
+      });
+    } catch (errors) {
+      Logger.errors(errors);
+    }
+  };
+
   const handleSubmit = () => {
-    if (!categories.trim()) setError("Name cannot be blank");
+    if (!categoryName.trim()) setError("Name cannot be blank");
     else {
+      addCategory();
       setError("");
-      setCategories("");
+      setCategoryName("");
       setIsAddCollapsed(true);
     }
   };
+
   useEffect(() => {
     setError("");
   }, [isAddCollapsed]);
@@ -25,7 +40,7 @@ const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
         <Input
           placeholder="Add new category"
           error={error}
-          value={categories}
+          value={categoryName}
           suffix={
             <Button
               style="link"
@@ -35,7 +50,7 @@ const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
             />
           }
           onChange={e => {
-            setCategories(e.target.value), setError("");
+            setCategoryName(e.target.value), setError("");
           }}
         />
       </div>
