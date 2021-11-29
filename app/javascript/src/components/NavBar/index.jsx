@@ -11,7 +11,7 @@ const NavBar = () => {
       <Header
         title={
           <span className="text-xl">
-            <NavLink className="p-4" to="/">
+            <NavLink className="p-4" to="/articles">
               {" "}
               Scribble
             </NavLink>
@@ -25,9 +25,9 @@ const NavBar = () => {
             <NavLink
               activeClassName="text-indigo-500"
               className="p-4 text-gray-500"
-              to="/security"
+              to="/settings"
             >
-              Security
+              Settings
             </NavLink>
           </span>
         }
