@@ -1,11 +1,14 @@
 import React, { useState } from "react";
 
-import { Search, Plus } from "@bigbinary/neeto-icons";
+import { Search, Plus, Close } from "@bigbinary/neeto-icons";
 import { Typography } from "@bigbinary/neetoui/v2";
 import { MenuBar } from "@bigbinary/neetoui/v2/layouts";
 
+import AddCategory from "./AddCategory";
+
 const SideBar = () => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
+  const [isAddCollapsed, setIsAddCollapsed] = useState(true);
 
   return (
     <div className="flex">
@@ -21,7 +24,8 @@ const SideBar = () => {
               onClick: () => setIsSearchCollapsed(!isSearchCollapsed),
             },
             {
-              icon: Plus,
+              icon: isAddCollapsed ? Plus : Close,
+              onClick: () => setIsAddCollapsed(!isAddCollapsed),
             },
           ]}
         >
@@ -37,6 +41,10 @@ const SideBar = () => {
         <MenuBar.Search
           collapse={isSearchCollapsed}
           onCollapse={() => setIsSearchCollapsed(true)}
+        />
+        <AddCategory
+          isAddCollapsed={isAddCollapsed}
+          setIsAddCollapsed={setIsAddCollapsed}
         />
         <MenuBar.Block label="Getting Started" count={80} />
         <MenuBar.Block label="Apps Integration" count={40} />
