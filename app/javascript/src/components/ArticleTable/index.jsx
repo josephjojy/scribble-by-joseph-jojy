@@ -1,11 +1,15 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Edit, Delete, Plus } from "@bigbinary/neeto-icons";
 import { Table, Button, Checkbox, Typography } from "@bigbinary/neetoui/v2";
 import { Dropdown } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
+import Logger from "js-logger";
+
+import articlesApi from "../../apis/articles";
 
 const ArticleTable = () => {
+  const [articles, setArticles] = useState([]);
   const style = {
     color: "rgba(99, 102, 241)",
   };
@@ -28,6 +32,32 @@ const ArticleTable = () => {
       </>
     ),
   });
+
+  const ROWDATA = articles.map(article => ({
+    title: article.title,
+    date: new Date(article.created_at).toLocaleString("en-us", {
+      month: "long",
+      year: "numeric",
+      day: "numeric",
+    }),
+    author: "Oliver Smith",
+    category: article.category,
+    status: article.status,
+  }));
+
+  const fetchArticles = async () => {
+    try {
+      const respsonse = await articlesApi.index();
+      const { articles } = await respsonse.data;
+      setArticles(articles);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
 
   return (
     <div className="flex flex-col overflow-auto my-8 mx-8 space-y-4">
@@ -75,50 +105,7 @@ const ArticleTable = () => {
         className="odd:bg-gray-100"
         rowSelection={false}
         columnData={COLUMNDATA}
-        rowData={[
-          {
-            title: "Welcome to Scribble",
-            date: "November 10th, 2021",
-            author: "Oliver Smith",
-            category: "Getting Started",
-            status: "Draft",
-          },
-          {
-            title: "Setting Up",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "Getting Started",
-            status: "Published",
-          },
-          {
-            title: "Redirection",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "App Integration",
-            status: "Published",
-          },
-          {
-            title: "Finance",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "Misc",
-            status: "Draft",
-          },
-          {
-            title: "Password",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "Misc",
-            status: "Published",
-          },
-          {
-            title: "Typography",
-            date: "November 8th, 2021",
-            author: "Oliver Smith",
-            category: "Misc",
-            status: "Draft",
-          },
-        ]}
+        rowData={ROWDATA}
       />
     </div>
   );
