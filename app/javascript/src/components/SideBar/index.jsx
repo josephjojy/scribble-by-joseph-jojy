@@ -8,7 +8,12 @@ import categoriesApi from "apis/categories";
 
 import AddCategory from "./AddCategory";
 
-const SideBar = ({ selectedCategory, setSelectedCategory }) => {
+const SideBar = ({
+  selectedCategory,
+  setSelectedCategory,
+  selectedStatus,
+  setSelectedStatus,
+}) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
   const [categories, setCategories] = useState([]);
@@ -24,9 +29,9 @@ const SideBar = ({ selectedCategory, setSelectedCategory }) => {
     }
   };
 
-  const handleClick = id => {
-    if (selectedCategory === id) setSelectedCategory();
-    else setSelectedCategory(id);
+  const handleClickCategory = name => {
+    if (selectedCategory === name) setSelectedCategory();
+    else setSelectedCategory(name);
   };
 
   useEffect(() => {
@@ -36,9 +41,24 @@ const SideBar = ({ selectedCategory, setSelectedCategory }) => {
   return (
     <div className="flex">
       <MenuBar showMenu={true} title="Articles">
-        <MenuBar.Block label="All" count={13} active />
-        <MenuBar.Block label="Draft" count={2} />
-        <MenuBar.Block label="Published" count={7} />
+        <MenuBar.Block
+          label="All"
+          onClick={() => setSelectedStatus("All")}
+          count={13}
+          active={selectedStatus === "All"}
+        />
+        <MenuBar.Block
+          label="Draft"
+          onClick={() => setSelectedStatus("Draft")}
+          count={2}
+          active={selectedStatus === "Draft"}
+        />
+        <MenuBar.Block
+          label="Published"
+          onClick={() => setSelectedStatus("Published")}
+          count={7}
+          active={selectedStatus === "Published"}
+        />
 
         <MenuBar.SubTitle
           iconProps={[
@@ -88,9 +108,9 @@ const SideBar = ({ selectedCategory, setSelectedCategory }) => {
               <MenuBar.Block
                 key={index}
                 label={category.name}
-                onClick={() => handleClick(category.id)}
+                onClick={() => handleClickCategory(category.name)}
                 count={0}
-                active={selectedCategory === category.id}
+                active={selectedCategory === category.name}
               />
             );
           })}
