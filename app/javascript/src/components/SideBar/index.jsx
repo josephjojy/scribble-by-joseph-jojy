@@ -31,7 +31,7 @@ const SideBar = ({ selectedCategory, setSelectedCategory }) => {
 
   useEffect(() => {
     fetchCategories();
-  }, [isAddCollapsed]);
+  }, []);
 
   return (
     <div className="flex">
@@ -77,6 +77,7 @@ const SideBar = ({ selectedCategory, setSelectedCategory }) => {
         <AddCategory
           isAddCollapsed={isAddCollapsed}
           setIsAddCollapsed={setIsAddCollapsed}
+          fetchCategories={fetchCategories}
         />
         {categories
           .filter(category =>
