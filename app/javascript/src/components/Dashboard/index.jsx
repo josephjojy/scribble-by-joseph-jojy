@@ -9,8 +9,8 @@ const Dashboard = () => (
   <>
     <NavBar />
     <Switch>
-      <Route exact path="/articles" component={Articles} />
-      <Redirect to="/articles" />
+      <Route exact path="/Articles" component={Articles} />
+      <Redirect to="/Articles" />
     </Switch>
   </>
 );

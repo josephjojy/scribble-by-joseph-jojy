@@ -6,7 +6,11 @@ import Logger from "js-logger";
 
 import categoriesApi from "../../apis/categories";
 
-const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
+const AddCategory = ({
+  isAddCollapsed,
+  setIsAddCollapsed,
+  fetchCategories,
+}) => {
   const [categoryName, setCategoryName] = useState("");
   const [error, setError] = useState("");
 
@@ -15,8 +19,9 @@ const AddCategory = ({ isAddCollapsed, setIsAddCollapsed }) => {
       await categoriesApi.create({
         category: { name: categoryName },
       });
+      fetchCategories();
     } catch (errors) {
-      Logger.errors(errors);
+      Logger.error(errors);
     }
   };
 

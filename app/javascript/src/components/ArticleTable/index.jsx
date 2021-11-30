@@ -1,22 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 
 import { Edit, Delete, Plus } from "@bigbinary/neeto-icons";
 import { Table, Button, Checkbox, Typography } from "@bigbinary/neetoui/v2";
 import { Dropdown } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
+import Logger from "js-logger";
 
-const ArticleTable = () => {
+import articlesApi from "../../apis/articles";
+
+const ArticleTable = ({ selectedCategory, selectedStatus }) => {
+  const [articles, setArticles] = useState([]);
+  const [columns, setColumns] = useState({
+    Title: true,
+    Date: true,
+    Author: true,
+    Category: true,
+    Status: true,
+  });
+  const [searchString, setSearchString] = useState("");
   const style = {
     color: "rgba(99, 102, 241)",
   };
 
-  const COLUMNS = ["Title", "Date", "Author", "Category", "Status"];
-
-  const COLUMNDATA = COLUMNS.map(column => ({
-    dataIndex: column.toLowerCase(),
-    key: column,
-    title: column,
-  }));
+  const COLUMNDATA = Object.keys(columns)
+    .filter(column => columns[column])
+    .map(column => ({
+      dataIndex: column.toLowerCase(),
+      key: column,
+      title: column,
+    }));
 
   COLUMNDATA.push({
     dataIndex: "edit_delete",
@@ -29,12 +41,61 @@ const ArticleTable = () => {
     ),
   });
 
+  const ROWDATA = articles
+    .filter(article => {
+      let status = true,
+        category = true;
+      if (selectedCategory) category = selectedCategory === article.category;
+
+      if (selectedStatus !== "All") status = selectedStatus === article.status;
+
+      return (
+        status &&
+        category &&
+        article.title.toLowerCase().includes(searchString.toLowerCase())
+      );
+    })
+    .map(article => ({
+      title: article.title,
+      date: new Date(article.created_at).toLocaleString("en-us", {
+        month: "long",
+        year: "numeric",
+        day: "numeric",
+      }),
+      author: "Oliver Smith",
+      category: article.category,
+      status: article.status,
+    }));
+
+  const handleChecked = (name, e) => {
+    setColumns(column => ({
+      ...column,
+      [name]: e.target.checked,
+    }));
+  };
+
+  const fetchArticles = async () => {
+    try {
+      const respsonse = await articlesApi.index();
+      const { articles } = await respsonse.data;
+      setArticles(articles);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchArticles();
+  }, []);
+
   return (
     <div className="flex flex-col overflow-auto my-8 mx-8 space-y-4">
       <SubHeader
         className="justify-end space-x-8 pr-8"
         searchProps={{
           placeholder: "Search Article Title",
+          value: searchString,
+          onChange: e => setSearchString(e.target.value),
         }}
         actionBlock={
           <>
@@ -44,16 +105,18 @@ const ArticleTable = () => {
               buttonProps={{
                 size: "large",
               }}
+              closeOnSelect={false}
             >
               <div className="space-y-4 px-4 py-2">
                 <Typography style="h4">Columns</Typography>
-                {COLUMNS.map((column, index) => (
+                {Object.keys(columns).map((column, index) => (
                   <Checkbox
                     key={index}
-                    checked
+                    checked={columns[column]}
                     id={column}
                     label={column}
                     style={style}
+                    onChange={e => handleChecked(column, e)}
                   />
                 ))}
               </div>
@@ -75,50 +138,7 @@ const ArticleTable = () => {
         className="odd:bg-gray-100"
         rowSelection={false}
         columnData={COLUMNDATA}
-        rowData={[
-          {
-            title: "Welcome to Scribble",
-            date: "November 10th, 2021",
-            author: "Oliver Smith",
-            category: "Getting Started",
-            status: "Draft",
-          },
-          {
-            title: "Setting Up",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "Getting Started",
-            status: "Published",
-          },
-          {
-            title: "Redirection",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "App Integration",
-            status: "Published",
-          },
-          {
-            title: "Finance",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "Misc",
-            status: "Draft",
-          },
-          {
-            title: "Password",
-            date: "November 9th, 2021",
-            author: "Oliver Smith",
-            category: "Misc",
-            status: "Published",
-          },
-          {
-            title: "Typography",
-            date: "November 8th, 2021",
-            author: "Oliver Smith",
-            category: "Misc",
-            status: "Draft",
-          },
-        ]}
+        rowData={ROWDATA}
       />
     </div>
   );
