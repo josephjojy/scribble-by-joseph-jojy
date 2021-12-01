@@ -6,10 +6,14 @@ import { Dropdown } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
 import Logger from "js-logger";
 
-import articlesApi from "../../apis/articles";
+import articlesApi from "apis/articles";
 
-const ArticleTable = ({ selectedCategory, selectedStatus }) => {
-  const [articles, setArticles] = useState([]);
+const ArticleTable = ({
+  selectedCategory,
+  selectedStatus,
+  articles,
+  setArticles,
+}) => {
   const [columns, setColumns] = useState({
     Title: true,
     Date: true,
@@ -41,31 +45,19 @@ const ArticleTable = ({ selectedCategory, selectedStatus }) => {
     ),
   });
 
-  const ROWDATA = articles
-    .filter(article => {
-      let status = true,
-        category = true;
-      if (selectedCategory) category = selectedCategory === article.category;
+  const ROWDATA = articles.filter(article => {
+    let status = true,
+      category = true;
+    if (selectedCategory) category = selectedCategory === article.category;
 
-      if (selectedStatus !== "All") status = selectedStatus === article.status;
+    if (selectedStatus !== "All") status = selectedStatus === article.status;
 
-      return (
-        status &&
-        category &&
-        article.title.toLowerCase().includes(searchString.toLowerCase())
-      );
-    })
-    .map(article => ({
-      title: article.title,
-      date: new Date(article.created_at).toLocaleString("en-us", {
-        month: "long",
-        year: "numeric",
-        day: "numeric",
-      }),
-      author: "Oliver Smith",
-      category: article.category,
-      status: article.status,
-    }));
+    return (
+      status &&
+      category &&
+      article.title.toLowerCase().includes(searchString.toLowerCase())
+    );
+  });
 
   const handleChecked = (name, e) => {
     setColumns(column => ({
@@ -132,7 +124,7 @@ const ArticleTable = ({ selectedCategory, selectedStatus }) => {
         }
       />
 
-      <Typography>13 Articles</Typography>
+      <Typography style="h4">{ROWDATA.length} Articles</Typography>
 
       <Table
         className="odd:bg-gray-100"

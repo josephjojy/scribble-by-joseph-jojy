@@ -4,7 +4,7 @@ import { Check } from "@bigbinary/neeto-icons";
 import { Input, Button } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
-import categoriesApi from "../../apis/categories";
+import categoriesApi from "apis/categories";
 
 const AddCategory = ({
   isAddCollapsed,

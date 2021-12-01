@@ -13,6 +13,7 @@ const SideBar = ({
   setSelectedCategory,
   selectedStatus,
   setSelectedStatus,
+  articles,
 }) => {
   const [isSearchCollapsed, setIsSearchCollapsed] = useState(true);
   const [isAddCollapsed, setIsAddCollapsed] = useState(true);
@@ -44,19 +45,21 @@ const SideBar = ({
         <MenuBar.Block
           label="All"
           onClick={() => setSelectedStatus("All")}
-          count={13}
+          count={articles.length}
           active={selectedStatus === "All"}
         />
         <MenuBar.Block
           label="Draft"
           onClick={() => setSelectedStatus("Draft")}
-          count={2}
+          count={articles.filter(article => article.status === "Draft").length}
           active={selectedStatus === "Draft"}
         />
         <MenuBar.Block
           label="Published"
           onClick={() => setSelectedStatus("Published")}
-          count={7}
+          count={
+            articles.filter(article => article.status === "Published").length
+          }
           active={selectedStatus === "Published"}
         />
 
@@ -109,7 +112,10 @@ const SideBar = ({
                 key={index}
                 label={category.name}
                 onClick={() => handleClickCategory(category.name)}
-                count={0}
+                count={
+                  articles.filter(article => article.category === category.name)
+                    .length
+                }
                 active={selectedCategory === category.name}
               />
             );
