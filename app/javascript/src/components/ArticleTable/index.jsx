@@ -6,7 +6,7 @@ import { Dropdown } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
 import Logger from "js-logger";
 
-import articlesApi from "../../apis/articles";
+import articlesApi from "apis/articles";
 
 const ArticleTable = ({
   selectedCategory,
