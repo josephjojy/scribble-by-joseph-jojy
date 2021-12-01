@@ -119,6 +119,7 @@ const ArticleTable = ({
               size="large"
               icon={() => <Plus size={20} className="ml-2" />}
               className="bg-indigo-500 text-white"
+              to="/Articles/create"
             />
           </>
         }
