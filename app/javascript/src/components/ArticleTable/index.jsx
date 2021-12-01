@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import { Edit, Delete, Plus } from "@bigbinary/neeto-icons";
-import { Table, Button, Checkbox, Typography } from "@bigbinary/neetoui/v2";
+import {
+  Table,
+  Button,
+  Checkbox,
+  Typography,
+  Alert,
+} from "@bigbinary/neetoui/v2";
 import { Dropdown } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
 import Logger from "js-logger";
@@ -22,6 +28,8 @@ const ArticleTable = ({
     Status: true,
   });
   const [searchString, setSearchString] = useState("");
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [deleteId, setDeleteId] = useState();
   const style = {
     color: "rgba(99, 102, 241)",
   };
@@ -37,10 +45,23 @@ const ArticleTable = ({
   COLUMNDATA.push({
     dataIndex: "edit_delete",
     key: "edit_delete",
-    render: () => (
+    render: (_, rowData) => (
       <>
-        <Button icon={() => <Delete />} style="text" />
-        <Button icon={() => <Edit />} style="text" />
+        <Button
+          icon={() => <Delete />}
+          style="text"
+          onClick={() => {
+            setDeleteId(rowData.id);
+            setDeleteAlert(true);
+          }}
+        />
+        <Button
+          icon={() => <Edit />}
+          style="text"
+          onClick={() =>
+            (window.location.href = `/Articles/${rowData.id}/edit`)
+          }
+        />
       </>
     ),
   });
@@ -66,6 +87,15 @@ const ArticleTable = ({
     }));
   };
 
+  const handleDelete = async () => {
+    try {
+      await articlesApi.destroy(deleteId);
+      fetchArticles();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
   const fetchArticles = async () => {
     try {
       const respsonse = await articlesApi.index();
@@ -82,6 +112,16 @@ const ArticleTable = ({
 
   return (
     <div className="flex flex-col overflow-auto my-8 mx-8 space-y-4">
+      <Alert
+        isOpen={deleteAlert}
+        message="Are you sure you want to delete? Article will be deleted forever."
+        onClose={() => setDeleteAlert(false)}
+        onSubmit={() => {
+          handleDelete();
+          setDeleteAlert(false);
+        }}
+        title="Delete Article!"
+      />
       <SubHeader
         className="justify-end space-x-8 pr-8"
         searchProps={{
