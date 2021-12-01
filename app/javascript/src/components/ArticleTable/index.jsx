@@ -45,31 +45,19 @@ const ArticleTable = ({
     ),
   });
 
-  const ROWDATA = articles
-    .filter(article => {
-      let status = true,
-        category = true;
-      if (selectedCategory) category = selectedCategory === article.category;
+  const ROWDATA = articles.filter(article => {
+    let status = true,
+      category = true;
+    if (selectedCategory) category = selectedCategory === article.category;
 
-      if (selectedStatus !== "All") status = selectedStatus === article.status;
+    if (selectedStatus !== "All") status = selectedStatus === article.status;
 
-      return (
-        status &&
-        category &&
-        article.title.toLowerCase().includes(searchString.toLowerCase())
-      );
-    })
-    .map(article => ({
-      title: article.title,
-      date: new Date(article.created_at).toLocaleString("en-us", {
-        month: "long",
-        year: "numeric",
-        day: "numeric",
-      }),
-      author: "Oliver Smith",
-      category: article.category,
-      status: article.status,
-    }));
+    return (
+      status &&
+      category &&
+      article.title.toLowerCase().includes(searchString.toLowerCase())
+    );
+  });
 
   const handleChecked = (name, e) => {
     setColumns(column => ({
