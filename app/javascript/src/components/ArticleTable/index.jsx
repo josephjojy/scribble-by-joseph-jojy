@@ -55,7 +55,13 @@ const ArticleTable = ({
             setDeleteAlert(true);
           }}
         />
-        <Button icon={() => <Edit />} style="text" />
+        <Button
+          icon={() => <Edit />}
+          style="text"
+          onClick={() =>
+            (window.location.href = `/Articles/${rowData.id}/edit`)
+          }
+        />
       </>
     ),
   });

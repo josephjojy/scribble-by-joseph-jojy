@@ -2,7 +2,7 @@
 
 class ArticlesController < ApplicationController
   before_action :load_category, only: %i[create]
-  before_action :load_article, only: %i[destroy]
+  before_action :load_article, only: %i[destroy show update]
 
   def index
     @articles = Article.all
@@ -23,6 +23,19 @@ class ArticlesController < ApplicationController
       render status: :ok, json: { notice: "Successfully deleted Article" }
     else
       error = @article.errors.full_messages.to_sentence
+      render status: :unprocessable_entity, json: { error: error }
+    end
+  end
+
+  def show
+    render
+  end
+
+  def update
+    if @article.update(article_params)
+      render status: :ok, json: { notice: "Successfully updated Article" }
+    else
+      error = article.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }
     end
   end
