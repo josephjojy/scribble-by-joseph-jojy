@@ -6,6 +6,7 @@ import SideBar from "../SideBar";
 const Articles = () => {
   const [selectedCategory, setSelectedCategory] = useState("");
   const [selectedStatus, setSelectedStatus] = useState("All");
+  const [articles, setArticles] = useState([]);
 
   return (
     <div className="flex">
@@ -14,10 +15,13 @@ const Articles = () => {
         setSelectedCategory={setSelectedCategory}
         selectedStatus={selectedStatus}
         setSelectedStatus={setSelectedStatus}
+        articles={articles}
       />
       <ArticleTable
         selectedCategory={selectedCategory}
         selectedStatus={selectedStatus}
+        articles={articles}
+        setArticles={setArticles}
       />
     </div>
   );

@@ -8,8 +8,12 @@ import Logger from "js-logger";
 
 import articlesApi from "../../apis/articles";
 
-const ArticleTable = ({ selectedCategory, selectedStatus }) => {
-  const [articles, setArticles] = useState([]);
+const ArticleTable = ({
+  selectedCategory,
+  selectedStatus,
+  articles,
+  setArticles,
+}) => {
   const [columns, setColumns] = useState({
     Title: true,
     Date: true,
@@ -132,7 +136,7 @@ const ArticleTable = ({ selectedCategory, selectedStatus }) => {
         }
       />
 
-      <Typography>13 Articles</Typography>
+      <Typography style="h4">{ROWDATA.length} Articles</Typography>
 
       <Table
         className="odd:bg-gray-100"
