@@ -63,3 +63,6 @@ gem "tzinfo-data", platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # React - Rails
 gem "react-rails"
+
+# Bycrypt
+gem "bcrypt", "~> 3.1.13"

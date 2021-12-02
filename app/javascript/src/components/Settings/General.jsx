@@ -1,7 +1,10 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Check, Close } from "@bigbinary/neeto-icons";
 import { Typography, Input, Checkbox, Button } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
+
+import siteSettingsApi from "../../apis/site_settings";
 
 const General = () => {
   const defaultErrors = {
@@ -11,8 +14,9 @@ const General = () => {
   };
   const passwordCheckRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
   const [siteName, setSiteName] = useState("");
+  const [id, setId] = useState();
   const [isPassword, setIsPassword] = useState(false);
-  const [password, setPassword] = useState("");
+  const [password, setPassword] = useState(null);
   const [errors, setErrors] = useState(defaultErrors);
 
   const handleChange = e => {
@@ -34,9 +38,32 @@ const General = () => {
       siteName &&
       (!isPassword || (errors.passwordInclude && errors.passwordLength))
     ) {
-      //update DB
+      try {
+        await siteSettingsApi.update(id, {
+          site_setting: {
+            name: siteName,
+            password: password,
+          },
+        });
+      } catch (error) {
+        Logger.error(error);
+      }
     }
   };
+
+  const fetchSettings = async () => {
+    try {
+      const response = await siteSettingsApi.index();
+      const { site_setting } = await response.data;
+      setSiteName(site_setting.name);
+      setId(site_setting.id);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+  useEffect(() => {
+    fetchSettings();
+  }, []);
 
   return (
     <div className="mx-auto my-10">
