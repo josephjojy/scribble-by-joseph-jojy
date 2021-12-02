@@ -12,6 +12,9 @@ module.exports = {
       colors:{
         indigo_50:"#EEF2FF",
       },
+      spacing: {
+        500: '500px',
+      }
 
     },
   },

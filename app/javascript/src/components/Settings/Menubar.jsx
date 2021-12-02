@@ -6,8 +6,8 @@ import { NavLink } from "react-router-dom";
 
 const Menubar = () => {
   return (
-    <div className="max-w-xs border-r-2 h-screen">
-      <div className="py-4 mx-1 space-y-2">
+    <div className="border-r-2 h-screen">
+      <div className="p-4 mx-1 space-y-2">
         <NavLink
           to={"/Settings/General"}
           className="flex p-3"
