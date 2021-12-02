@@ -6,6 +6,7 @@ import Articles from "../Articles";
 import AddArticles from "../Articles/AddArticles";
 import EditArticles from "../Articles/EditArticles";
 import NavBar from "../NavBar";
+import Settings from "../Settings";
 
 const Dashboard = () => (
   <>
@@ -14,6 +15,7 @@ const Dashboard = () => (
       <Route exact path="/Articles" component={Articles} />
       <Route exact path="/Articles/create" component={AddArticles} />
       <Route exact path="/Articles/:id/edit" component={EditArticles} />
+      <Route path="/Settings" component={Settings} />
       <Redirect to="/Articles" />
     </Switch>
   </>

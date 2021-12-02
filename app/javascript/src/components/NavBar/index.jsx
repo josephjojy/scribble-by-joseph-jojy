@@ -25,7 +25,7 @@ const NavBar = () => {
             <NavLink
               activeClassName="text-indigo-500"
               className="p-4 text-gray-500"
-              to="/settings"
+              to="/Settings"
             >
               Settings
             </NavLink>

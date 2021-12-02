@@ -1,3 +1,4 @@
+
 module.exports = {
   important: true,
   future: {
@@ -6,7 +7,13 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {},
+
+    extend: {
+      colors:{
+        indigo_50:"#EEF2FF",
+      },
+
+    },
   },
   variants: {
     backgroundColor: ["odd", "even"],
