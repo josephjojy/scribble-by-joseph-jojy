@@ -7,8 +7,8 @@ import {
   Checkbox,
   Typography,
   Alert,
+  Dropdown,
 } from "@bigbinary/neetoui/v2";
-import { Dropdown } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
 import Logger from "js-logger";
 
