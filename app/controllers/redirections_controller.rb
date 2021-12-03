@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 class RedirectionsController < ApplicationController
+  before_action :load_redirection, only: %i[destroy]
+
   def index
     redirections = Redirection.all
     render status: :ok, json: { redirections: redirections }
@@ -16,9 +18,25 @@ class RedirectionsController < ApplicationController
     end
   end
 
+  def destroy
+    if @redirection.destroy
+      render status: :ok, json: { notice: t("successfull_task", entity: "Redirection", task: "deleted") }
+    else
+      error = @redirection.errors.full_messages.to_sentence
+      render status: :unprocessable_entity, json: { error: error }
+    end
+  end
+
   private
 
     def redirection_params
       params.require(:redirection).permit(:from_url, :to_url)
+    end
+
+    def load_redirection
+      @redirection = Redirection.find_by_id(params[:id])
+      unless @redirection
+        render status: :not_found, json: { error: t("not_found", entity: "Redirection") }
+      end
     end
 end

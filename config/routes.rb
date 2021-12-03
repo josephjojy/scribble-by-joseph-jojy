@@ -7,7 +7,7 @@ Rails.application.routes.draw do
 
   resources :site_settings, only: %i[index update]
 
-  resources :redirections, only: %i[index create]
+  resources :redirections, only: %i[index create destroy]
 
   root "home#index"
   get "*path", to: "home#index", via: :all

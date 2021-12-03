@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 
 import { Edit, Delete, Plus, Check } from "@bigbinary/neeto-icons";
-import { Typography, Button, Input } from "@bigbinary/neetoui/v2";
+import { Typography, Button, Input, Alert } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
 import redirectionsApi from "../../apis/redirections";
@@ -11,6 +11,17 @@ const Redirections = () => {
   const [toUrl, setToUrl] = useState("");
   const [fromUrl, setFromUrl] = useState("");
   const [redirections, setRedirections] = useState([]);
+  const [deleteAlert, setDeleteAlert] = useState(false);
+  const [id, setId] = useState();
+
+  const handleDelete = async () => {
+    try {
+      await redirectionsApi.destroy(id);
+      fetchRedirections();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
 
   const handleCreateSubmit = async () => {
     try {
@@ -43,6 +54,16 @@ const Redirections = () => {
 
   return (
     <div className="mx-auto my-10">
+      <Alert
+        isOpen={deleteAlert}
+        message="Are you sure you want to delete?"
+        onClose={() => setDeleteAlert(false)}
+        onSubmit={() => {
+          handleDelete();
+          setDeleteAlert(false);
+        }}
+        title="Delete Redirection!"
+      />
       <div className="w-700">
         <Typography style="h2">Redirections</Typography>
         <Typography className="text-gray-600" style="body1">
@@ -68,7 +89,14 @@ const Redirections = () => {
                 </td>
                 <td className="flex justify-evenly  p-4">
                   <Button icon={() => <Edit />} style="text" />
-                  <Button icon={() => <Delete />} style="text" />
+                  <Button
+                    icon={() => <Delete />}
+                    style="text"
+                    onClick={() => {
+                      setDeleteAlert(true);
+                      setId(redirection.id);
+                    }}
+                  />
                 </td>
               </tr>
             ))}
