@@ -3,7 +3,13 @@
 require "test_helper"
 
 class SiteSettingTest < ActiveSupport::TestCase
-  # test "the truth" do
-  #   assert true
-  # end
+  def setup
+    @site_setting = create(:site_setting)
+  end
+
+  def test_name_cannot_be_empty
+    @site_setting.name = nil
+    assert @site_setting.invalid?
+    assert_includes @site_setting.errors.full_messages, "Name can't be blank"
+  end
 end
