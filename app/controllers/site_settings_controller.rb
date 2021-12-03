@@ -10,7 +10,7 @@ class SiteSettingsController < ApplicationController
 
   def update
     if @site_setting.update(site_settings_params)
-      render status: :ok, json: { notice: "Successfully updated Site Settings" }
+      render status: :ok, json: { notice: t("successfull_task", entity: "Site Settings", task: "updated") }
     else
       error = @site_setting.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }
@@ -22,7 +22,7 @@ class SiteSettingsController < ApplicationController
     def load_site_setting
       @site_setting = SiteSetting.find_by_id(params[:id])
       unless @site_setting
-        render status: :not_found, json: { error: "Not found" }
+        render status: :not_found, json: { error: t("not_found", entity: "Site Settings") }
       end
     end
 
