@@ -12,18 +12,34 @@ const Redirections = () => {
   const [fromUrl, setFromUrl] = useState("");
   const [redirections, setRedirections] = useState([]);
   const [deleteAlert, setDeleteAlert] = useState(false);
-  const [id, setId] = useState();
+  const [deleteId, setDeleteId] = useState();
+  const [editId, setEditId] = useState();
 
   const handleDelete = async () => {
     try {
-      await redirectionsApi.destroy(id);
+      await redirectionsApi.destroy(deleteId);
       fetchRedirections();
     } catch (error) {
       Logger.error(error);
     }
   };
 
-  const handleCreateSubmit = async () => {
+  const handleEdit = async () => {
+    try {
+      await redirectionsApi.update(editId, {
+        redirection: {
+          from_url: fromUrl,
+          to_url: toUrl,
+        },
+      });
+      setEditId();
+      fetchRedirections();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  const handleCreate = async () => {
     try {
       await redirectionsApi.create({
         redirection: {
@@ -78,28 +94,64 @@ const Redirections = () => {
               <th className="p-4">To Path</th>
               <th className="text-center p-4">Action</th>
             </tr>
-            {redirections.map((redirection, index) => (
-              <tr key={index} className="bg-white border-8 border-indigo_50">
-                <td className=" p-4">
-                  <span className="text-gray-500">{window.location.host}</span>/
-                  {redirection.from_url}
-                </td>
-                <td className=" p-4">
-                  {window.location.host}/{redirection.to_url}
-                </td>
-                <td className="flex justify-evenly  p-4">
-                  <Button icon={() => <Edit />} style="text" />
-                  <Button
-                    icon={() => <Delete />}
-                    style="text"
-                    onClick={() => {
-                      setDeleteAlert(true);
-                      setId(redirection.id);
-                    }}
-                  />
-                </td>
-              </tr>
-            ))}
+            {redirections.map((redirection, index) => {
+              return redirection.id === editId ? (
+                <>
+                  <tr className="bg-white border-8 border-indigo_50">
+                    <td className=" p-4">
+                      <Input
+                        value={fromUrl}
+                        onChange={e => setFromUrl(e.target.value)}
+                      />
+                    </td>
+                    <td className=" p-4">
+                      <Input
+                        value={toUrl}
+                        onChange={e => setToUrl(e.target.value)}
+                      />
+                    </td>
+                    <td className="flex justify-evenly  p-4">
+                      <Button
+                        icon={() => <Check />}
+                        style="text"
+                        onClick={() => handleEdit()}
+                      />
+                    </td>
+                  </tr>
+                </>
+              ) : (
+                <tr key={index} className="bg-white border-8 border-indigo_50">
+                  <td className=" p-4">
+                    <span className="text-gray-500">
+                      {window.location.host}
+                    </span>
+                    /{redirection.from_url}
+                  </td>
+                  <td className=" p-4">
+                    {window.location.host}/{redirection.to_url}
+                  </td>
+                  <td className="flex justify-evenly  p-4">
+                    <Button
+                      icon={() => <Edit />}
+                      style="text"
+                      onClick={() => {
+                        setToUrl(redirection.to_url);
+                        setFromUrl(redirection.from_url);
+                        setEditId(redirection.id);
+                      }}
+                    />
+                    <Button
+                      icon={() => <Delete />}
+                      style="text"
+                      onClick={() => {
+                        setDeleteAlert(true);
+                        setDeleteId(redirection.id);
+                      }}
+                    />
+                  </td>
+                </tr>
+              );
+            })}
 
             {isAddRedirection && (
               <tr className="bg-white border-8 border-indigo_50">
@@ -119,7 +171,7 @@ const Redirections = () => {
                   <Button
                     icon={() => <Check />}
                     style="text"
-                    onClick={() => handleCreateSubmit()}
+                    onClick={() => handleCreate()}
                   />
                 </td>
               </tr>
