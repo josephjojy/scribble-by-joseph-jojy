@@ -12,7 +12,18 @@ const Redirections = () => {
   const [fromUrl, setFromUrl] = useState("");
   const [redirections, setRedirections] = useState([]);
 
-  const handleCreateSubmit = () => {
+  const handleCreateSubmit = async () => {
+    try {
+      await redirectionsApi.create({
+        redirection: {
+          from_url: fromUrl,
+          to_url: toUrl,
+        },
+      });
+      fetchRedirections();
+    } catch (error) {
+      Logger.error(error);
+    }
     setIsAddRedirection(false);
   };
 
