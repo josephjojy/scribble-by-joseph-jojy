@@ -135,6 +135,7 @@ const Redirections = () => {
                       icon={() => <Edit />}
                       style="text"
                       onClick={() => {
+                        setIsAddRedirection(false);
                         setToUrl(redirection.to_url);
                         setFromUrl(redirection.from_url);
                         setEditId(redirection.id);
@@ -179,7 +180,12 @@ const Redirections = () => {
           </table>
           <div
             className="mt-4 flex cursor-pointer"
-            onClick={() => setIsAddRedirection(true)}
+            onClick={() => {
+              setIsAddRedirection(true);
+              setEditId();
+              setFromUrl("");
+              setToUrl("");
+            }}
           >
             <Plus />
             <Typography className="my-auto text-indigo-500 font-semibold">
