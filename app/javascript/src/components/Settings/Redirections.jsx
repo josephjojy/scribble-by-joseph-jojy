@@ -1,16 +1,34 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import { Edit, Delete, Plus, Check } from "@bigbinary/neeto-icons";
 import { Typography, Button, Input } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
+
+import redirectionsApi from "../../apis/redirections";
 
 const Redirections = () => {
   const [isAddRedirection, setIsAddRedirection] = useState(false);
   const [toUrl, setToUrl] = useState("");
   const [fromUrl, setFromUrl] = useState("");
+  const [redirections, setRedirections] = useState([]);
 
   const handleCreateSubmit = () => {
     setIsAddRedirection(false);
   };
+
+  const fetchRedirections = async () => {
+    try {
+      const response = await redirectionsApi.index();
+      const { redirections } = response.data;
+      setRedirections(redirections);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchRedirections();
+  }, []);
 
   return (
     <div className="mx-auto my-10">
@@ -28,17 +46,22 @@ const Redirections = () => {
               <th className="p-4">To Path</th>
               <th className="text-center p-4">Action</th>
             </tr>
-            <tr className="bg-white border-8 border-indigo_50">
-              <td className=" p-4">
-                <span className="text-gray-500">{window.location.host}</span>
-                /welcome
-              </td>
-              <td className=" p-4">{window.location.host}</td>
-              <td className="flex justify-evenly  p-4">
-                <Button icon={() => <Edit />} style="text" />
-                <Button icon={() => <Delete />} style="text" />
-              </td>
-            </tr>
+            {redirections.map((redirection, index) => (
+              <tr key={index} className="bg-white border-8 border-indigo_50">
+                <td className=" p-4">
+                  <span className="text-gray-500">{window.location.host}</span>/
+                  {redirection.from_url}
+                </td>
+                <td className=" p-4">
+                  {window.location.host}/{redirection.to_url}
+                </td>
+                <td className="flex justify-evenly  p-4">
+                  <Button icon={() => <Edit />} style="text" />
+                  <Button icon={() => <Delete />} style="text" />
+                </td>
+              </tr>
+            ))}
+
             {isAddRedirection && (
               <tr className="bg-white border-8 border-indigo_50">
                 <td className=" p-4">
