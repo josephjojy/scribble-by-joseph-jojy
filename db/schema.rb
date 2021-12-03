@@ -12,7 +12,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_11_29_085822) do
+ActiveRecord::Schema.define(version: 2021_12_02_135340) do
 
   create_table "articles", force: :cascade do |t|
     t.text "title", null: false
@@ -26,6 +26,13 @@ ActiveRecord::Schema.define(version: 2021_11_29_085822) do
 
   create_table "categories", force: :cascade do |t|
     t.text "name", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "site_settings", force: :cascade do |t|
+    t.text "name", null: false
+    t.text "password_digest"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
   end

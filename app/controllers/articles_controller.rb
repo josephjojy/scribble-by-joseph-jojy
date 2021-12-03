@@ -11,7 +11,7 @@ class ArticlesController < ApplicationController
   def create
     article = @category.articles.new(article_params)
     if article.save
-      render status: :ok, json: { notice: "Successfully created Article" }
+      render status: :ok, json: { notice: t("successfull_task", entity: "Article", task: "created") }
     else
       error = article.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }
@@ -20,7 +20,7 @@ class ArticlesController < ApplicationController
 
   def destroy
     if @article.destroy
-      render status: :ok, json: { notice: "Successfully deleted Article" }
+      render status: :ok, json: { notice: t("successfull_task", entity: "Article", task: "destroyed") }
     else
       error = @article.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }
@@ -33,7 +33,7 @@ class ArticlesController < ApplicationController
 
   def update
     if @article.update(article_params)
-      render status: :ok, json: { notice: "Successfully updated Article" }
+      render status: :ok, json: { notice: t("successfull_task", entity: "Article", task: "updated") }
     else
       error = article.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }
@@ -49,14 +49,14 @@ class ArticlesController < ApplicationController
     def load_category
       @category = Category.find_by(id: article_params[:category_id])
       unless @category
-        render status: :not_found, json: { error: "Category not found" }
+        render status: :not_found, json: { error: t("not_found", entity: "Category") }
       end
     end
 
     def load_article
       @article = Article.find_by_id(params[:id])
       unless @article
-        render status: :not_found, json: { error: "Article not found" }
+        render status: :not_found, json: { error: t("not_found", entity: "Article") }
       end
     end
 end

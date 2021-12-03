@@ -30,4 +30,5 @@
 # available at https://guides.rubyonrails.org/i18n.html.
 
 en:
-  hello: "Hello world"
+  successfull_task: "%{entity} was successfully %{task}"
+  not_found: "%{entity} not found"

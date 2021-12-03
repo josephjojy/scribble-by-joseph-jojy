@@ -9,7 +9,7 @@ class CategoriesController < ApplicationController
   def create
     category = Category.new(category_params)
     if category.save
-      render status: :ok, json: { notice: "Successfully created Category" }
+      render status: :ok, json: { notice: t("successfull_task", entity: "Category", task: "created") }
     else
       error = category.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }

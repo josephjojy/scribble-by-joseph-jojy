@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 
-import ArticleTable from "../ArticleTable";
-import SideBar from "../SideBar";
+import ArticleTable from "./ArticleTable";
+import SideBar from "./SideBar";
 
 const Articles = () => {
   const [selectedCategory, setSelectedCategory] = useState("");

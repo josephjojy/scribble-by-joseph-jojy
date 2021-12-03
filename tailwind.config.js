@@ -1,3 +1,4 @@
+
 module.exports = {
   important: true,
   future: {
@@ -6,7 +7,16 @@ module.exports = {
   },
   purge: [],
   theme: {
-    extend: {},
+
+    extend: {
+      colors:{
+        indigo_50:"#EEF2FF",
+      },
+      spacing: {
+        500: '500px',
+      }
+
+    },
   },
   variants: {
     backgroundColor: ["odd", "even"],
