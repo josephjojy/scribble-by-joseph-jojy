@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 class CategoriesController < ApplicationController
-  before_action :load_category, only: %i[destroy]
+  before_action :load_category, only: %i[destroy update]
 
   def index
     categories = Category.all
@@ -21,6 +21,15 @@ class CategoriesController < ApplicationController
   def destroy
     if @category.destroy
       render status: :ok, json: { notice: t("successfull_task", entity: "Category", task: "deleted") }
+    else
+      error = @category.errors.full_messages.to_sentence
+      render status: :unprocessable_entity, json: { error: error }
+    end
+  end
+
+  def update
+    if @category.update(category_params)
+      render status: :ok, json: { notice: t("successfull_task", entity: "Category", task: "updated") }
     else
       error = @category.errors.full_messages.to_sentence
       render status: :unprocessable_entity, json: { error: error }
