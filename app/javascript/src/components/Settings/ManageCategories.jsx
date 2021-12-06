@@ -1,11 +1,51 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Plus, Edit, Delete, Reorder } from "@bigbinary/neeto-icons";
-import { Typography, Button } from "@bigbinary/neetoui/v2";
+import { Typography, Button, Alert } from "@bigbinary/neetoui/v2";
+import Logger from "js-logger";
+
+import categoriesApi from "apis/categories";
 
 const ManageCategories = () => {
+  const [categories, setCategories] = useState([]);
+  const [deleteId, setDeleteId] = useState();
+  const [deleteAlert, setDeleteAlert] = useState(false);
+
+  const handleDelete = async () => {
+    try {
+      await categoriesApi.destroy(deleteId);
+      fetchCategories();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  const fetchCategories = async () => {
+    try {
+      const response = await categoriesApi.index();
+      const { categories } = await response.data;
+      setCategories(categories);
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  useEffect(() => {
+    fetchCategories();
+  }, []);
+
   return (
     <div className="mx-auto my-10">
+      <Alert
+        isOpen={deleteAlert}
+        message="Are you sure you want to delete?"
+        onClose={() => setDeleteAlert(false)}
+        onSubmit={() => {
+          handleDelete();
+          setDeleteAlert(false);
+        }}
+        title="Delete Category!"
+      />
       <div className="w-600">
         <Typography style="h2">Manage Categories</Typography>
         <Typography className="text-gray-600" style="body1">
@@ -16,16 +56,25 @@ const ManageCategories = () => {
             <Plus />
             Add new category
           </Typography>
-          <div className="flex justify-between border-t-2 pt-4">
-            <Typography className="my-auto font-semibold flex" draggable>
-              <Reorder />
-              General Settings
-            </Typography>
-            <div>
-              <Button icon={() => <Edit />} style="text" />
-              <Button icon={() => <Delete />} style="text" />
+          {categories.map((category, index) => (
+            <div key={index} className="flex justify-between border-t-2 pt-4">
+              <Typography className="my-auto font-semibold flex" draggable>
+                <Reorder />
+                {category.name}
+              </Typography>
+              <div>
+                <Button
+                  icon={() => <Delete />}
+                  style="text"
+                  onClick={() => {
+                    setDeleteAlert(true);
+                    setDeleteId(category.id);
+                  }}
+                />
+                <Button icon={() => <Edit />} style="text" />
+              </div>
             </div>
-          </div>
+          ))}
         </div>
       </div>
     </div>
