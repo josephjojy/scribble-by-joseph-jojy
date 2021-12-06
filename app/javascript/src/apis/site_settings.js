@@ -1,11 +1,11 @@
 import axios from "axios";
 
-const index = () => axios.get("/site_settings");
+const show = () => axios.get("/site_settings");
 
-const update = (id, payload) => axios.put(`/site_settings/${id}`, payload);
+const update = payload => axios.put(`/site_settings/`, payload);
 
 const siteSettingsApi = {
-  index,
+  show,
   update,
 };
 

@@ -3,9 +3,9 @@
 class SiteSettingsController < ApplicationController
   before_action :load_site_setting, only: %i[update]
 
-  def index
-    site_setting = SiteSetting.all
-    render status: :ok, json: { site_setting: site_setting[0] }
+  def show
+    site_setting = SiteSetting.first
+    render status: :ok, json: { site_setting: site_setting }
   end
 
   def update
@@ -20,7 +20,7 @@ class SiteSettingsController < ApplicationController
   private
 
     def load_site_setting
-      @site_setting = SiteSetting.find_by_id(params[:id])
+      @site_setting = SiteSetting.first
       unless @site_setting
         render status: :not_found, json: { error: t("not_found", entity: "Site Settings") }
       end

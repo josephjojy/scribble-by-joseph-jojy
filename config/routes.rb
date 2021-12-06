@@ -5,7 +5,7 @@ Rails.application.routes.draw do
 
   resources :articles, only: %i[index create destroy show update]
 
-  resources :site_settings, only: %i[index update]
+  resource :site_settings, only: %i[show update]
 
   resources :redirections, only: %i[index create destroy update]
 
