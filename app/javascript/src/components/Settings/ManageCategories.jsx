@@ -12,6 +12,8 @@ const ManageCategories = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [categoryName, setCategoryName] = useState("");
   const [editId, setEditId] = useState();
+  const [isAddCategory, setIsAddCategory] = useState(false);
+  const [nameError, setNameError] = useState(null);
 
   const handleDelete = async () => {
     try {
@@ -23,16 +25,36 @@ const ManageCategories = () => {
   };
 
   const handleEdit = async () => {
-    try {
-      await categoriesApi.update(editId, {
-        category: {
-          name: categoryName,
-        },
-      });
-      setEditId();
-      fetchCategories();
-    } catch (error) {
-      Logger.error(error);
+    if (!categoryName) setNameError("Name cannot be blank");
+    else {
+      try {
+        await categoriesApi.update(editId, {
+          category: {
+            name: categoryName,
+          },
+        });
+        setEditId();
+        fetchCategories();
+      } catch (error) {
+        Logger.error(error);
+      }
+    }
+  };
+
+  const handleCreate = async () => {
+    if (!categoryName) setNameError("Name cannot be blank");
+    else {
+      try {
+        await categoriesApi.create({
+          category: {
+            name: categoryName,
+          },
+        });
+        fetchCategories();
+      } catch (error) {
+        Logger.error(error);
+      }
+      setIsAddCategory(false);
     }
   };
 
@@ -68,10 +90,36 @@ const ManageCategories = () => {
           Create and configure the categories inside your scribble.
         </Typography>
         <div className="mt-8 space-y-4">
-          <Typography className="my-auto text-indigo-500 font-semibold flex">
-            <Plus />
-            Add new category
-          </Typography>
+          {isAddCategory ? (
+            <Input
+              value={categoryName}
+              onChange={e => {
+                setCategoryName(e.target.value);
+                setNameError(null);
+              }}
+              suffix={
+                <Button
+                  icon={Check}
+                  style="text"
+                  onClick={() => handleCreate()}
+                />
+              }
+              error={nameError}
+              className="w-1/2"
+            />
+          ) : (
+            <Typography
+              className="my-auto text-indigo-500 font-semibold flex cursor-pointer"
+              onClick={() => {
+                setEditId();
+                setCategoryName();
+                setIsAddCategory(true);
+              }}
+            >
+              <Plus />
+              Add new category
+            </Typography>
+          )}
           {categories.map((category, index) => {
             return category.id === editId ? (
               <div key={index} className="flex justify-between border-t-2 pt-4">
@@ -79,7 +127,10 @@ const ManageCategories = () => {
                   <Reorder />
                   <Input
                     value={categoryName}
-                    onChange={e => setCategoryName(e.target.value)}
+                    onChange={e => {
+                      setCategoryName(e.target.value);
+                      setNameError(null);
+                    }}
                     suffix={
                       <Button
                         icon={Check}
@@ -87,6 +138,7 @@ const ManageCategories = () => {
                         onClick={() => handleEdit()}
                       />
                     }
+                    error={nameError}
                   />
                 </Typography>
               </div>
@@ -109,6 +161,7 @@ const ManageCategories = () => {
                     icon={() => <Edit />}
                     style="text"
                     onClick={() => {
+                      setIsAddCategory(false);
                       setCategoryName(category.name);
                       setEditId(category.id);
                     }}
