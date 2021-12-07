@@ -37,6 +37,7 @@ const NavBar = () => {
             style="secondary"
             size="large"
             icon={() => <ExternalLink size={20} className="ml-2" />}
+            to="/scribble"
           />
         }
       />

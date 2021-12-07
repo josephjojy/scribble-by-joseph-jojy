@@ -168,6 +168,7 @@ const ArticleTable = ({
       <Typography style="h4">{ROWDATA.length} Articles</Typography>
 
       <Table
+        id="ArticleTable"
         className="odd:bg-gray-100"
         rowSelection={false}
         columnData={COLUMNDATA}
