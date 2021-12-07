@@ -33,7 +33,7 @@ const Sidebar = () => {
           >
             {category.articles?.map((article, index) => (
               <NavLink
-                className="ml-6 py-1"
+                className="ml-6 py-1 flex"
                 key={index}
                 to={`/scribble/${article.slug}`}
                 activeClassName="text-indigo-500"
