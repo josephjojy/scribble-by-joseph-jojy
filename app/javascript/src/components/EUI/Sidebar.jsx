@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 
 import { Accordion } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
+import { NavLink } from "react-router-dom";
 
 import publicApi from "apis/public";
 
@@ -31,9 +32,14 @@ const Sidebar = () => {
             className="border-none font-bold"
           >
             {category.articles?.map((article, index) => (
-              <div className="ml-6 py-1" key={index}>
+              <NavLink
+                className="ml-6 py-1"
+                key={index}
+                to={`/scribble/${article.slug}`}
+                activeClassName="text-indigo-500"
+              >
                 {article.title}
-              </div>
+              </NavLink>
             ))}
           </Accordion.Item>
         ))}
