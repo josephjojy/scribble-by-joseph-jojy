@@ -7,12 +7,6 @@ class ArticleTest < ActiveSupport::TestCase
     @article = create(:article)
   end
 
-  def test_article_should_have_category
-    @article.category_id = nil
-    assert @article.invalid?
-    assert_includes @article.errors.full_messages, "Category must exist"
-  end
-
   def test_article_should_have_title
     @article.title = nil
     assert @article.invalid?
