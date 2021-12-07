@@ -28,7 +28,7 @@ const App = () => {
     <Router>
       <ToastContainer />
       <Switch>
-        <Route path="/public" component={EUI} />
+        <Route path="/scribble" component={EUI} />
         <Route path="/" component={Dashboard} />
       </Switch>
     </Router>

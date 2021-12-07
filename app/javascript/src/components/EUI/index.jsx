@@ -6,6 +6,7 @@ import Logger from "js-logger";
 import siteSettingsApi from "apis/site_settings";
 
 import Navbar from "./Navbar";
+import Sidebar from "./Sidebar";
 
 const EUI = () => {
   const [siteSetting, setSiteSetting] = useState({});
@@ -37,6 +38,9 @@ const EUI = () => {
   return (
     <div>
       <Navbar name={siteSetting.name} />
+      <div className="flex">
+        <Sidebar />
+      </div>
     </div>
   );
 };

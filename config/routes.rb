@@ -9,6 +9,8 @@ Rails.application.routes.draw do
 
   resources :redirections, only: %i[index create destroy update]
 
+  resources :public, only: %i[index]
+
   post "/categories/reorder", to: "categories#update_position"
 
   root "home#index"
