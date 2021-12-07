@@ -77,7 +77,6 @@ const ArticleForm = ({
                 setErrors({ ...errors, category: null });
               }}
               error={errors?.category}
-              required
             />
           </div>
           <Textarea
@@ -90,18 +89,23 @@ const ArticleForm = ({
             }}
             error={errors?.body}
             rows={10}
-            required
           />
           <div className="flex">
-            <Button className="bg-indigo-500" label={status} type="submit" />
+            <div className="border-r">
+              <Button
+                className="bg-indigo-500 rounded-l-md rounded-r-none"
+                label={status}
+                type="submit"
+              />
+            </div>
             <Dropdown
               buttonProps={{
-                className: "bg-indigo-500",
+                className: "bg-indigo-500 rounded-l-none",
               }}
               autoWidth="false"
             >
               <div
-                className="bg-indigo-500 text-right p-1 text-white cursor-pointer"
+                className="text-indigo-500 text-right p-1 font-bold cursor-pointer"
                 onClick={() => handleStatus()}
               >
                 {status === "Save Draft" ? "Publish" : "Save Draft"}

@@ -4,7 +4,7 @@ import { Edit, Delete, Plus, Check } from "@bigbinary/neeto-icons";
 import { Typography, Button, Input, Alert } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
-import redirectionsApi from "../../apis/redirections";
+import redirectionsApi from "apis/redirections";
 
 const Redirections = () => {
   const [isAddRedirection, setIsAddRedirection] = useState(false);
@@ -135,6 +135,7 @@ const Redirections = () => {
                       icon={() => <Edit />}
                       style="text"
                       onClick={() => {
+                        setIsAddRedirection(false);
                         setToUrl(redirection.to_url);
                         setFromUrl(redirection.from_url);
                         setEditId(redirection.id);
@@ -179,7 +180,12 @@ const Redirections = () => {
           </table>
           <div
             className="mt-4 flex cursor-pointer"
-            onClick={() => setIsAddRedirection(true)}
+            onClick={() => {
+              setIsAddRedirection(true);
+              setEditId();
+              setFromUrl("");
+              setToUrl("");
+            }}
           >
             <Plus />
             <Typography className="my-auto text-indigo-500 font-semibold">

@@ -4,7 +4,7 @@ import { Check, Close } from "@bigbinary/neeto-icons";
 import { Typography, Input, Checkbox, Button } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
-import siteSettingsApi from "../../apis/site_settings";
+import siteSettingsApi from "apis/site_settings";
 
 const General = () => {
   const defaultErrors = {
@@ -14,7 +14,6 @@ const General = () => {
   };
   const passwordCheckRegex = /^(?=.*[0-9])(?=.*[a-zA-Z])([a-zA-Z0-9]+)$/;
   const [siteName, setSiteName] = useState("");
-  const [id, setId] = useState();
   const [isPassword, setIsPassword] = useState(false);
   const [password, setPassword] = useState(null);
   const [errors, setErrors] = useState(defaultErrors);
@@ -39,7 +38,7 @@ const General = () => {
       (!isPassword || (errors.passwordInclude && errors.passwordLength))
     ) {
       try {
-        await siteSettingsApi.update(id, {
+        await siteSettingsApi.update({
           site_setting: {
             name: siteName,
             password: password,
@@ -53,10 +52,9 @@ const General = () => {
 
   const fetchSettings = async () => {
     try {
-      const response = await siteSettingsApi.index();
+      const response = await siteSettingsApi.show();
       const { site_setting } = await response.data;
       setSiteName(site_setting.name);
-      setId(site_setting.id);
     } catch (error) {
       Logger.error(error);
     }
