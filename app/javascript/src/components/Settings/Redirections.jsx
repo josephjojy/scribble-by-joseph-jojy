@@ -4,7 +4,7 @@ import { Edit, Delete, Plus, Check } from "@bigbinary/neeto-icons";
 import { Typography, Button, Input, Alert } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
-import redirectionsApi from "../../apis/redirections";
+import redirectionsApi from "apis/redirections";
 
 const Redirections = () => {
   const [isAddRedirection, setIsAddRedirection] = useState(false);

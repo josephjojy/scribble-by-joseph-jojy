@@ -4,7 +4,7 @@ import { Check, Close } from "@bigbinary/neeto-icons";
 import { Typography, Input, Checkbox, Button } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
-import siteSettingsApi from "../../apis/site_settings";
+import siteSettingsApi from "apis/site_settings";
 
 const General = () => {
   const defaultErrors = {
