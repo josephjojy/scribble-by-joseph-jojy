@@ -9,6 +9,7 @@ import { registerIntercepts, setAuthHeaders } from "apis/axios";
 import { initializeLogger } from "common/logger";
 
 import Dashboard from "./components/Dashboard";
+import EUI from "./components/EUI";
 
 const App = () => {
   const [loading, setLoading] = useState(true);
@@ -27,6 +28,8 @@ const App = () => {
     <Router>
       <ToastContainer />
       <Switch>
+        <Route path="/scribble/:slug" component={EUI} />
+        <Route path="/scribble" component={EUI} />
         <Route path="/" component={Dashboard} />
       </Switch>
     </Router>
