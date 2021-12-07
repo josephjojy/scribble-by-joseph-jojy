@@ -1,10 +1,30 @@
 import React, { useEffect, useState } from "react";
 
-import { Plus, Edit, Delete, Reorder, Check } from "@bigbinary/neeto-icons";
-import { Typography, Button, Alert, Input } from "@bigbinary/neetoui/v2";
+import { Plus, Check } from "@bigbinary/neeto-icons";
+import {
+  Typography,
+  Button,
+  Alert,
+  Input,
+  PageLoader,
+} from "@bigbinary/neetoui/v2";
+import {
+  DndContext,
+  closestCenter,
+  PointerSensor,
+  useSensor,
+  useSensors,
+} from "@dnd-kit/core";
+import {
+  arrayMove,
+  SortableContext,
+  verticalListSortingStrategy,
+} from "@dnd-kit/sortable";
 import Logger from "js-logger";
 
 import categoriesApi from "apis/categories";
+
+import SortableList from "./SortableList";
 
 const ManageCategories = () => {
   const [categories, setCategories] = useState([]);
@@ -14,6 +34,7 @@ const ManageCategories = () => {
   const [editId, setEditId] = useState();
   const [isAddCategory, setIsAddCategory] = useState(false);
   const [nameError, setNameError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const handleDelete = async () => {
     try {
@@ -63,6 +84,7 @@ const ManageCategories = () => {
       const response = await categoriesApi.index();
       const { categories } = await response.data;
       setCategories(categories);
+      setLoading(false);
     } catch (error) {
       Logger.error(error);
     }
@@ -71,6 +93,40 @@ const ManageCategories = () => {
   useEffect(() => {
     fetchCategories();
   }, []);
+
+  const handleReorder = async categoryList => {
+    const reorder = categoryList.map((category, index) => ({
+      id: category.id,
+      position: index,
+    }));
+    try {
+      await categoriesApi.update_position({
+        category: {
+          reorder: reorder,
+        },
+      });
+      fetchCategories();
+    } catch (error) {
+      Logger.error(error);
+    }
+  };
+
+  const sensors = useSensors(
+    useSensor(PointerSensor, { activationConstraint: { distance: 2 } })
+  );
+
+  const handleDragEnd = ({ active, over }) => {
+    if (active.id !== over.id) {
+      setCategories(items => {
+        const oldIndex = items.findIndex(item => item.id === active.id);
+        const newIndex = items.findIndex(item => item.id === over.id);
+        handleReorder(arrayMove(items, oldIndex, newIndex));
+        return arrayMove(items, oldIndex, newIndex);
+      });
+    }
+  };
+
+  if (loading) return <PageLoader className="m-auto" />;
 
   return (
     <div className="mx-auto my-10">
@@ -120,56 +176,33 @@ const ManageCategories = () => {
               Add new category
             </Typography>
           )}
-          {categories.map((category, index) => {
-            return category.id === editId ? (
-              <div key={index} className="flex justify-between border-t-2 pt-4">
-                <Typography className="my-auto font-semibold flex" draggable>
-                  <Reorder />
-                  <Input
-                    value={categoryName}
-                    onChange={e => {
-                      setCategoryName(e.target.value);
-                      setNameError(null);
-                    }}
-                    suffix={
-                      <Button
-                        icon={Check}
-                        style="text"
-                        onClick={() => handleEdit()}
-                      />
-                    }
-                    error={nameError}
-                  />
-                </Typography>
-              </div>
-            ) : (
-              <div key={index} className="flex justify-between border-t-2 pt-4">
-                <Typography className="my-auto font-semibold flex" draggable>
-                  <Reorder />
-                  {category.name}
-                </Typography>
-                <div>
-                  <Button
-                    icon={() => <Delete />}
-                    style="text"
-                    onClick={() => {
-                      setDeleteAlert(true);
-                      setDeleteId(category.id);
-                    }}
-                  />
-                  <Button
-                    icon={() => <Edit />}
-                    style="text"
-                    onClick={() => {
-                      setIsAddCategory(false);
-                      setCategoryName(category.name);
-                      setEditId(category.id);
-                    }}
-                  />
-                </div>
-              </div>
-            );
-          })}
+          <DndContext
+            sensors={sensors}
+            collisionDetection={closestCenter}
+            onDragEnd={handleDragEnd}
+          >
+            <SortableContext
+              items={categories}
+              strategy={verticalListSortingStrategy}
+            >
+              {categories.map(category => (
+                <SortableList
+                  key={category.id}
+                  category={category}
+                  editId={editId}
+                  categoryName={categoryName}
+                  setCategoryName={setCategoryName}
+                  setNameError={setNameError}
+                  handleEdit={handleEdit}
+                  nameError={nameError}
+                  setDeleteAlert={setDeleteAlert}
+                  setDeleteId={setDeleteId}
+                  setIsAddCategory={setIsAddCategory}
+                  setEditId={setEditId}
+                />
+              ))}
+            </SortableContext>
+          </DndContext>
         </div>
       </div>
     </div>

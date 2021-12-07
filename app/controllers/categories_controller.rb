@@ -4,7 +4,7 @@ class CategoriesController < ApplicationController
   before_action :load_category, only: %i[destroy update]
 
   def index
-    categories = Category.all
+    categories = Category.all.order(:position)
     render status: :ok, json: { categories: categories }
   end
 
@@ -36,6 +36,14 @@ class CategoriesController < ApplicationController
     end
   end
 
+  def update_position
+    @category = Category.update_position(update_position_params[:reorder])
+    unless @category
+      error = @category.errors.full_messages.to_sentence
+      render status: :unprocessable_entity, json: { error: error }
+    end
+  end
+
   private
 
     def category_params
@@ -47,5 +55,9 @@ class CategoriesController < ApplicationController
       unless @category
         render status: :not_found, json: { error: t("not_found", entity: "Category") }
       end
+    end
+
+    def update_position_params
+      params.require(:category).permit(reorder: [:id, :position])
     end
 end

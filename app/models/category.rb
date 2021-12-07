@@ -7,6 +7,12 @@ class Category < ApplicationRecord
 
   validates :name, presence: true
 
+  def self.update_position(items)
+    items.each do |item|
+      Category.find_by_id(item[:id]).update(position: item[:position])
+    end
+  end
+
   private
 
     def set_position
