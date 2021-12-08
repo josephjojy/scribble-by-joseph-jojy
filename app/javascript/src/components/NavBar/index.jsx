@@ -7,7 +7,7 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <div className="border-b-2 px-8">
+    <div className="border-b-2 px-8 sticky top-0 z-50 bg-white">
       <Header
         title={
           <span className="text-xl">
