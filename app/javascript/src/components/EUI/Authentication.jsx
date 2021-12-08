@@ -4,7 +4,6 @@ import { Input, Typography, Button } from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
 import authApi from "apis/auth";
-import { setAuthHeaders } from "apis/axios";
 
 import Image from "../../../../assets/images/Group.png";
 
@@ -15,8 +14,7 @@ const Authentication = ({ name }) => {
     try {
       const response = await authApi.login({ login: { password } });
       sessionStorage.setItem("authToken", response.data.authentication_token);
-      setAuthHeaders();
-      window.location.href = "./scribble";
+      window.location.href = "/scribble";
     } catch (error) {
       Logger.error(error);
     }
@@ -39,7 +37,7 @@ const Authentication = ({ name }) => {
       >
         <Input
           label="Password"
-          type="text"
+          type="password"
           onChange={e => setPassword(e.target.value)}
         />
         <Button

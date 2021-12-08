@@ -32,5 +32,3 @@
 en:
   successfull_task: "%{entity} was successfully %{task}"
   not_found: "%{entity} not found"
-  session:
-    could_not_auth: "Could not authenticate with the provided credentials."
