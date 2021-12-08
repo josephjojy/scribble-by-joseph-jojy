@@ -36,7 +36,16 @@ const ArticlesBoard = () => {
     );
   }
 
-  if (!slug) return <div></div>;
+  if (!slug) {
+    return (
+      <div className="m-10">
+        <Typography style="h1">Welcome</Typography>
+        <Typography>
+          Welcome to the Scribble! Explore the Knowledge Base
+        </Typography>
+      </div>
+    );
+  }
 
   return (
     <div className="m-8">
