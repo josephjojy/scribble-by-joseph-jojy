@@ -11,6 +11,8 @@ Rails.application.routes.draw do
 
   resources :public, only: %i[index show], param: :slug
 
+  resource :session, only: :create
+
   post "/categories/reorder", to: "categories#update_position"
 
   root "home#index"
