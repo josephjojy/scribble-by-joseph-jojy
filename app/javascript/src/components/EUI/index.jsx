@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
 
 import Logger from "js-logger";
+import { either, isEmpty, isNil } from "ramda";
 
 import siteSettingsApi from "apis/site_settings";
 
 import ArticlesBoard from "./ArticlesBoard";
+import Authentication from "./Authentication";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 const EUI = () => {
+  const authToken = sessionStorage.getItem("authToken");
+  const isLoggedIn = !either(isNil, isEmpty)(authToken) && authToken !== "null";
+
   const [siteSetting, setSiteSetting] = useState({});
 
   const fetchSiteSettings = async () => {
@@ -28,10 +33,14 @@ const EUI = () => {
   return (
     <div>
       <Navbar name={siteSetting.name} />
-      <div className="flex">
-        <Sidebar />
-        <ArticlesBoard />
-      </div>
+      {!isLoggedIn && siteSetting.hasPassword ? (
+        <Authentication name={siteSetting.name} />
+      ) : (
+        <div className="flex">
+          <Sidebar />
+          <ArticlesBoard />
+        </div>
+      )}
     </div>
   );
 };

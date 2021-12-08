@@ -4,8 +4,7 @@ class SiteSettingsController < ApplicationController
   before_action :load_site_setting, only: %i[update]
 
   def show
-    site_setting = SiteSetting.first
-    render status: :ok, json: { site_setting: site_setting }
+    @site_setting = SiteSetting.first
   end
 
   def update
