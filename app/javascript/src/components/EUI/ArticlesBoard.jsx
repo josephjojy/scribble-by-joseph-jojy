@@ -48,7 +48,7 @@ const ArticlesBoard = () => {
   }
 
   return (
-    <div className="m-8">
+    <div className="overflow-y-scroll w-full m-8">
       <Typography className="font-bold text-4xl">{article.title}</Typography>
       <div className="flex space-x-3 pt-2">
         <Tag

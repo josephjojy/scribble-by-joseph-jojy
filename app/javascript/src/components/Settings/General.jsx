@@ -64,7 +64,7 @@ const General = () => {
   }, []);
 
   return (
-    <div className="mx-auto my-10">
+    <div className="overflow-y-scroll w-full flex justify-center my-10">
       <div className="w-500">
         <Typography style="h2">General Settings</Typography>
         <Typography className="text-gray-600" style="body1">

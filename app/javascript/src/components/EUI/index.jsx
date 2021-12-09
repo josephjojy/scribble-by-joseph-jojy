@@ -31,12 +31,12 @@ const EUI = () => {
   }, []);
 
   return (
-    <div>
+    <div className="flex flex-col h-screen">
       <Navbar name={siteSetting.name} />
       {!isLoggedIn && siteSetting.hasPassword ? (
         <Authentication name={siteSetting.name} />
       ) : (
-        <div className="flex">
+        <div className="flex overflow-y-hidden">
           <Sidebar />
           <ArticlesBoard />
         </div>

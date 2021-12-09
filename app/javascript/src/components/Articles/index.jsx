@@ -9,7 +9,7 @@ const Articles = () => {
   const [articles, setArticles] = useState([]);
 
   return (
-    <div className="flex">
+    <div className="flex overflow-y-hidden">
       <SideBar
         selectedCategory={selectedCategory}
         setSelectedCategory={setSelectedCategory}

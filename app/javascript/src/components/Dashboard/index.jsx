@@ -9,7 +9,7 @@ import NavBar from "../NavBar";
 import Settings from "../Settings";
 
 const Dashboard = () => (
-  <>
+  <div className="flex flex-col h-screen">
     <NavBar />
     <Switch>
       <Route exact path="/Articles" component={Articles} />
@@ -18,7 +18,7 @@ const Dashboard = () => (
       <Route path="/Settings" component={Settings} />
       <Redirect to="/Articles" />
     </Switch>
-  </>
+  </div>
 );
 
 export default Dashboard;

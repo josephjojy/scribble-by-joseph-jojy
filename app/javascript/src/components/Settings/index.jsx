@@ -8,7 +8,7 @@ import MenuBar from "./Menubar";
 import Redirections from "./Redirections";
 
 const Settings = () => (
-  <div className="flex">
+  <div className="flex overflow-y-hidden">
     <MenuBar />
     <Switch>
       <Route exact path="/Settings/General" component={General} />

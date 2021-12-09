@@ -129,7 +129,7 @@ const ManageCategories = () => {
   if (loading) return <PageLoader className="m-auto" />;
 
   return (
-    <div className="mx-auto my-10">
+    <div className="overflow-y-scroll w-full flex justify-center my-10">
       <Alert
         isOpen={deleteAlert}
         message="Are you sure you want to delete?"
