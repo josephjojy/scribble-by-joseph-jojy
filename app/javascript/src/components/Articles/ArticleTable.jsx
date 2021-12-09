@@ -8,6 +8,7 @@ import {
   Typography,
   Alert,
   Dropdown,
+  PageLoader,
 } from "@bigbinary/neetoui/v2";
 import { SubHeader } from "@bigbinary/neetoui/v2/layouts";
 import Logger from "js-logger";
@@ -30,6 +31,7 @@ const ArticleTable = ({
   const [searchString, setSearchString] = useState("");
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState();
+  const [loading, setLoading] = useState(true);
   const style = {
     color: "rgba(99, 102, 241)",
   };
@@ -101,6 +103,7 @@ const ArticleTable = ({
       const respsonse = await articlesApi.index();
       const { articles } = await respsonse.data;
       setArticles(articles);
+      setLoading(false);
     } catch (error) {
       Logger.error(error);
     }
@@ -109,6 +112,8 @@ const ArticleTable = ({
   useEffect(() => {
     fetchArticles();
   }, []);
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="flex flex-col overflow-auto m-8 space-y-4">
