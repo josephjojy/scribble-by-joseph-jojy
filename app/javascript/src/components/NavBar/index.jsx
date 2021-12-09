@@ -7,18 +7,17 @@ import { NavLink } from "react-router-dom";
 
 const NavBar = () => {
   return (
-    <div className="border-b-2 px-8 sticky top-0 z-50 bg-white">
+    <div className="border-b-2 px-8 ">
       <Header
         title={
           <span className="text-xl">
-            <NavLink className="p-4" to="/Articles">
-              {" "}
+            <NavLink className="p-4" to="/Articles/dashboard">
               Scribble
             </NavLink>
             <NavLink
               activeClassName="text-indigo-500"
               className="p-4 text-gray-500"
-              to="/Articles"
+              to="/Articles/dashboard"
             >
               Articles
             </NavLink>

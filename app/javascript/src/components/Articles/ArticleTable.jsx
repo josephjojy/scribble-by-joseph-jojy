@@ -111,7 +111,7 @@ const ArticleTable = ({
   }, []);
 
   return (
-    <div className="flex flex-col overflow-auto my-8 mx-8 space-y-4">
+    <div className="flex flex-col overflow-auto m-8 space-y-4">
       <Alert
         isOpen={deleteAlert}
         message="Are you sure you want to delete? Article will be deleted forever."
