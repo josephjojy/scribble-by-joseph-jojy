@@ -11,14 +11,13 @@ const NavBar = () => {
       <Header
         title={
           <span className="text-xl">
-            <NavLink className="p-4" to="/Articles">
-              {" "}
+            <NavLink className="p-4" to="/Articles/dashboard">
               Scribble
             </NavLink>
             <NavLink
               activeClassName="text-indigo-500"
               className="p-4 text-gray-500"
-              to="/Articles"
+              to="/Articles/dashboard"
             >
               Articles
             </NavLink>

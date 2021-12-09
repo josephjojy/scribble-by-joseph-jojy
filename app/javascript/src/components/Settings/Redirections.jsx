@@ -123,12 +123,12 @@ const Redirections = () => {
                 <tr key={index} className="bg-white border-8 border-indigo_50">
                   <td className=" p-4">
                     <span className="text-gray-500">
-                      {window.location.host}
+                      {window.location.host}/scribble
                     </span>
                     /{redirection.from_url}
                   </td>
                   <td className=" p-4">
-                    {window.location.host}/{redirection.to_url}
+                    {window.location.host}/scribble/{redirection.to_url}
                   </td>
                   <td className="flex justify-evenly  p-4">
                     <Button
