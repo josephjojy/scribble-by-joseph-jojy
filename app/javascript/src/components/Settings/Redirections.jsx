@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import { Edit, Delete, Plus, Check } from "@bigbinary/neeto-icons";
-import { Typography, Button, Input, Alert } from "@bigbinary/neetoui/v2";
+import {
+  Typography,
+  Button,
+  Input,
+  Alert,
+  PageLoader,
+} from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
 import redirectionsApi from "apis/redirections";
@@ -14,6 +20,7 @@ const Redirections = () => {
   const [deleteAlert, setDeleteAlert] = useState(false);
   const [deleteId, setDeleteId] = useState();
   const [editId, setEditId] = useState();
+  const [loading, setLoading] = useState(true);
 
   const handleDelete = async () => {
     try {
@@ -59,6 +66,7 @@ const Redirections = () => {
       const response = await redirectionsApi.index();
       const { redirections } = response.data;
       setRedirections(redirections);
+      setLoading(false);
     } catch (error) {
       Logger.error(error);
     }
@@ -67,6 +75,8 @@ const Redirections = () => {
   useEffect(() => {
     fetchRedirections();
   }, []);
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="overflow-y-scroll w-full flex justify-center my-10">

@@ -1,7 +1,13 @@
 import React, { useState, useEffect } from "react";
 
 import { Check, Close } from "@bigbinary/neeto-icons";
-import { Typography, Input, Checkbox, Button } from "@bigbinary/neetoui/v2";
+import {
+  Typography,
+  Input,
+  Checkbox,
+  Button,
+  PageLoader,
+} from "@bigbinary/neetoui/v2";
 import Logger from "js-logger";
 
 import siteSettingsApi from "apis/site_settings";
@@ -17,6 +23,7 @@ const General = () => {
   const [isPassword, setIsPassword] = useState(false);
   const [password, setPassword] = useState(null);
   const [errors, setErrors] = useState(defaultErrors);
+  const [loading, setLoading] = useState(true);
 
   const handleChange = e => {
     const pass = e.target.value;
@@ -55,6 +62,7 @@ const General = () => {
       const response = await siteSettingsApi.show();
       const { site_setting } = await response.data;
       setSiteName(site_setting.name);
+      setLoading(false);
     } catch (error) {
       Logger.error(error);
     }
@@ -62,6 +70,8 @@ const General = () => {
   useEffect(() => {
     fetchSettings();
   }, []);
+
+  if (loading) return <PageLoader />;
 
   return (
     <div className="overflow-y-scroll w-full flex justify-center my-10">
