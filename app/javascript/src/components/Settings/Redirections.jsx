@@ -80,7 +80,7 @@ const Redirections = () => {
         }}
         title="Delete Redirection!"
       />
-      <div className="w-700">
+      <div className="w-800">
         <Typography style="h2">Redirections</Typography>
         <Typography className="text-gray-600" style="body1">
           Create and configure redirection rules to send users from old links to
@@ -88,7 +88,7 @@ const Redirections = () => {
           SEO friendly.
         </Typography>
         <div className="bg-indigo_50 px-6 py-6 mt-6">
-          <table className="w-full text-left">
+          <table className="w-full text-left table-fixed">
             <tr className="text-gray-500 ">
               <th className="p-4">From Path</th>
               <th className="p-4">To Path</th>
@@ -121,13 +121,13 @@ const Redirections = () => {
                 </>
               ) : (
                 <tr key={index} className="bg-white border-8 border-indigo_50">
-                  <td className=" p-4">
+                  <td className=" p-4 overflow-x-auto border-white">
                     <span className="text-gray-500">
                       {window.location.host}/scribble
                     </span>
                     /{redirection.from_url}
                   </td>
-                  <td className=" p-4">
+                  <td className=" p-4 overflow-x-auto border-white">
                     {window.location.host}/scribble/{redirection.to_url}
                   </td>
                   <td className="flex justify-evenly  p-4">
